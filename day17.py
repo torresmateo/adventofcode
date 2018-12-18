@@ -1,6 +1,6 @@
 import itertools
 import sys
-sys.setrecursionlimit(10000)
+sys.setrecursionlimit()
 
 
 def print_structure(s, colour=True):
