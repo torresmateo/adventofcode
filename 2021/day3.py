@@ -1,4 +1,7 @@
 
+import collections
+
+
 def part1(data):
     digits = {}
     for number in data:
@@ -15,16 +18,30 @@ def part1(data):
 
 
 def part2(data):
-    x, y, aim = 0, 0, 0
-    for command, amount in data:
-        if command == 'forward':
-            x += amount
-            y += aim * amount
-        elif command == 'down':
-            aim += amount
-        elif command == 'up':
-            aim -= amount
-    return x * y
+    from collections import Counter 
+    oxygen_rating = 'not_found'
+    curr_data = data
+    for i in range(len(data[0])):
+        commons = Counter([d[i] for d in curr_data])
+        max_common = max(commons, key=commons.get)
+        print(commons, max_common)
+        curr_data = [d for d in curr_data if d[i] == max_common]
+        print(i, len(curr_data))
+        if len(curr_data) == 1:
+            oxygen_rating = curr_data[0]
+            break
+        
+    co2_rating = 'not_found'
+    curr_data = data
+    for i in range(len(data[0])):
+        commons = Counter([d[i] for d in curr_data])
+        min_common = min(commons, key=commons.get)
+        curr_data = [d for d in curr_data if d[i] == min_common]
+        if len(curr_data) == 1:
+            co2_rating = curr_data[0]
+            break
+    print(f'[{oxygen_rating}, {co2_rating}]')
+    return int(oxygen_rating, 2) * int(co2_rating, 2)
 
 def parseline(l):
     return l.strip()
@@ -32,7 +49,7 @@ def parseline(l):
 def run():
     data = [parseline(line) for line in open('day3.input')]
     print(f'Part 1: {part1(data)}')
-    #print(f'Part 2: {part2(data)}')
+    print(f'Part 2: {part2(data)}')
 
 if __name__ == '__main__':
     run()
